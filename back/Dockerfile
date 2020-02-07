@@ -1,5 +1,8 @@
+FROM gradle:6.1-jdk13 AS builder
+COPY . /app
+RUN gradle -p /app clean assemble
+
 FROM openjdk:13-jdk-alpine
+COPY --from=builder /app/build/libs/*.jar /app/app.jar
 EXPOSE 8080
-EXPOSE 5105
-COPY build/libs/*.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar","-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5105"]
+ENTRYPOINT ["java","-jar","/app/app.jar"]
