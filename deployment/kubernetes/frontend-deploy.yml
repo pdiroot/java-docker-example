@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: java-docker-app
+      component: frontend
+  template:
+    metadata:
+      labels:
+        app: java-docker-app
+        component: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: pdiroot/java-docker-app-frontend
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80

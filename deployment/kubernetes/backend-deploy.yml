@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: java-docker-app
+      component: backend
+  template:
+    metadata:
+      labels:
+        app: java-docker-app
+        component: backend
+    spec:
+      containers:
+        - name: backend
+          image: pdiroot/java-docker-app-backend
+          env:
+            - name: DB_HOST
+              value: workshop.cg3r2ae0c5gf.eu-central-1.rds.amazonaws.com
+            - name: DB_SCHEMA
+              value: workshop
+            - name: DB_USERNAME
+              value: workshop
+            - name: DB_PASSWORD
+              value: 8snHGgaV
+          ports:
+            - name: backend
+              containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: 8080
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 8080
