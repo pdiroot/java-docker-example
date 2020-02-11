@@ -31,11 +31,11 @@ resource "aws_security_group" "applications" {
   description = "Rules for application tier"
 
   ingress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "tcp"
-    security_groups = [aws_security_group.public.id]
-    description     = "all-tcp-ports"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "all-tcp-ports"
   }
 
   egress {
@@ -57,18 +57,18 @@ resource "aws_security_group" "databases" {
   description = "Rules for database tier"
 
   ingress {
-    from_port       = 5432
-    to_port         = 5432
-    protocol        = "tcp"
-    security_groups = [aws_security_group.applications.id]
-    description     = "postgresql"
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "postgresql"
   }
 
   egress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = -1
-    security_groups = [aws_security_group.applications.id]
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = merge(var.tags, {
