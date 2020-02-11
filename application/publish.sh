@@ -7,7 +7,7 @@ cd "$ScriptDir"
 # Enable strict mode.
 set -eu -o pipefail
 
-# Build and publish containers.
+# Build and publish containers to docker registry.
 docker build -t java-docker-app-backend:latest backend \
   && docker tag java-docker-app-backend:latest docker.io/pdiroot/java-docker-app-backend:latest \
   && docker push docker.io/pdiroot/java-docker-app-backend:latest
